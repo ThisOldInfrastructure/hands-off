@@ -1,0 +1,64 @@
+### Localization
+d-i debian-installer/locale string en_US.UTF-8
+d-i keyboard-configuration/xkb-keymap select us
+d-i keyboard-configuration/layoutcode sring us
+d-i console-setup/ask_detect boolean false
+
+### Mirror
+d-i mirror/http/mirror select us.archive.ubuntu.com
+
+### Network configuration
+d-i netcfg/choose_interface select auto
+d-i netcfg/use_autoconfig boolean true
+d-i netcfg/get_hostname string cloudnode
+d-i netcfg/get_domain string toi.local
+
+### Bypass the Proxy Setup
+d-i mirror/http/proxy string
+
+### Account setup
+d-i passwd/root-login boolean true
+d-i passwd/make-user boolean false
+# Root password generated with 
+# mkpasswd -m sha-512 -S $(pwgen -ns 16 1) r00tm3
+d-i passwd/root-password-crypted password $6$6OB9crMuEvH7jmFJ$ordL7cvuMnk1pkmxzxOHzXnwgyrCRShpFSHjkTM/ZMHoc3tdOvrz7YPTtaMVquetCho/APjS4kISpMBJuKN2b.
+
+### Clock and time zone setup
+d-i clock-setup/utc boolean true
+d-i time/zone string America/Vancouver
+d-i clock-setup/ntp boolean true
+
+### Partitioning
+d-i partman-auto/method             string regular
+d-i partman/mount_style select uuid
+d-i partman-auto/choose_recipe      select cloudnode
+d-i partman/confirm_write_new_label boolean true
+d-i partman/choose_partition        select Finish partitioning and write changes to disk
+d-i partman/confirm                 boolean true
+d-i partman-basicmethods/method_only boolean false
+d-i partman-auto/expert_recipe string one-small-partition :: 6000 1000 6000 ext4 $primary{ } $bootable{ } method{ format } format{ } use_filesystem{ } filesystem{ ext4 } mountpoint{ / } .  256 512 1000 linux-swap $primary{} method{ swap } format{ } . 100 10000 1000000000 ext2 $primary{} method{ keep } .
+
+### Apt setup
+d-i apt-setup/disable-cdrom-entries boolean true
+d-i apt-setup/use_mirror boolean true
+d-i apt-setup/non-free boolean true
+d-i apt-setup/contrib boolean true
+d-i apt-setup/services-select multiselect security, updates, backports
+d-i apt-setup/security_host string security.ubuntu.org
+d-i apt-setup/local0/repository string http://repo.saltstack.com/apt/ubuntu/16.04/amd64/latest jessie main
+d-i apt-setup/local0/comment string SaltStack repo
+d-i apt-setup/local0/key string http://repo.saltstack.com/apt/ubuntu/16.04/amd64/latest/SALTSTACK-GPG-KEY.pub
+d-i pkgsel/update-policy select none
+tasksel tasksel/first multiselect standard, openssh-server
+
+### Boot loader installation
+d-i grub-installer/only_debian boolean true
+d-i grub-installer/with_other_os boolean true
+d-i grub-installer/bootdev  string default
+d-i grub-installer/with_other_os boolean true
+d-i grub-installer/force-efi-extra-removable boolean true
+d-i finish-install/reboot_in_progress note
+d-i cdrom-detect/eject boolean true
+d-i debian-installer/exit/poweroff boolean true
+d-i grub-installer/grub2_instead_of_grub_legacy boolean true
+

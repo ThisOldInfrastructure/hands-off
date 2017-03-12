@@ -1,0 +1,2 @@
+# preseed for desktop/lxde
+tasksel tasksel/first multiselect desktop, lxde-desktop, print-server, standard
