@@ -1,0 +1,16 @@
+#!/bin/sh
+#
+# Copyright (c) 2005-2009 Hands.com Ltd
+# distributed under the terms of the GNU GPL version 2 or (at your option) any later version
+# see the file "COPYING" for details
+set -e
+
+. /tmp/HandsOff-fn.sh
+
+echo 'debug: Allow SSH Root password login...'
+if [ -e /target/etc/ssh/sshd_config ] ; then
+  sed -i 's/PermitRootLogin.*/PermitRootLogin yes/g' /target/etc/ssh/sshd_config
+fi
+
+echo 'debug: exiting successfully'
+exit 0
